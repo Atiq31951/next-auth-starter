@@ -3,8 +3,6 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-import { getUserByEmail } from "_/data/user";
-
 export const {
   handlers: { GET, POST },
   auth,
@@ -15,20 +13,16 @@ export const {
     CredentialsProvider({
       authorize: async (credentials) => {
         try {
-          if (!credentials?.email || !credentials?.password) {
-            throw new Error("Invalid credentials");
-          }
-          const user = await getUserByEmail(credentials.email);
-          console.log("🚀 ~ authorize: ~ user:", user);
-          if (user) {
-            if (user.password === credentials.password) {
-              return user;
-            } else {
-              throw new Error("Invalid credentials");
-            }
-          } else {
-            throw new Error("No user found with this email");
-          }
+          const response = await fetch("http://localhost:3000/api/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(credentials),
+          });
+
+          const responseJson = await response.json();
+          return responseJson;
         } catch (error) {
           throw new Error(error);
         }

@@ -1,5 +1,5 @@
 import { auth } from "_/auth";
-import LoginForm from "_/components/auth/login-form";
+import LoginForm from "_/components/auth/login/login-form";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 

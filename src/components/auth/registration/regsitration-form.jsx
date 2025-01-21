@@ -1,10 +1,9 @@
 "use client";
 
-import { doCredentialLogin } from "_/actions";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-function CredentialLogin() {
+function RegistrationForm() {
   const [error, setError] = useState();
 
   const router = useRouter();
@@ -16,9 +15,15 @@ function CredentialLogin() {
       const formData = new FormData(e.target);
       const formDataObject = Object.fromEntries(formData);
 
-      const response = await doCredentialLogin(formDataObject);
+      const response = await fetch("/api/register", {
+        method: "POST",
+        body: JSON.stringify(formDataObject),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-      if (!!response.error) {
+      if (!response.ok) {
         setError(response.error);
       } else {
         router.push("/");
@@ -30,6 +35,26 @@ function CredentialLogin() {
 
   return (
     <form onSubmit={handleFormSubmit}>
+      <div>
+        <label htmlFor="firstName">First Name</label>
+        <input
+          type="text"
+          name="first_name"
+          id="firstName"
+          className="border mx-2 border-gray-500 rounded"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="lastName">Last Name</label>
+        <input
+          type="text"
+          name="last_name"
+          id="lastName"
+          className="border mx-2 border-gray-500 rounded"
+        />
+      </div>
+
       <div>
         <label htmlFor="email">Email Address</label>
         <input
@@ -54,10 +79,10 @@ function CredentialLogin() {
         type="submit"
         className="bg-orange-300 mt-4 rounded flex justify-center items-center w-36"
       >
-        Credential Login
+        Register
       </button>
     </form>
   );
 }
 
-export default CredentialLogin;
+export default RegistrationForm;

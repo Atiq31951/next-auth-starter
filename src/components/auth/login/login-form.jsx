@@ -1,4 +1,5 @@
-import { doSocialLogin } from "_/actions";
+import Link from "next/link";
+
 import SocialLogin from "./social-login";
 import CredentialLogin from "./credential-login";
 
@@ -7,6 +8,10 @@ function LoginForm() {
     <>
       <CredentialLogin />
       <SocialLogin />
+      <p className="my-3">Don't have account?</p>
+      <Link href="/register" className="text-blue-500">
+        Register
+      </Link>
     </>
   );
 }
