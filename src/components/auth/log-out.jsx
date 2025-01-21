@@ -1,6 +1,6 @@
 "use server";
 
-import { doLogout } from "_/app/actions";
+import { doLogout } from "_/actions";
 import React from "react";
 
 function LogOut() {
